@@ -6,7 +6,6 @@ from mininet.link import Intf
 
 
 class LoopbackIntf(Intf):
-
     "A special interface object that handles a loopback interface for a node"
 
     def __init__(self, node, loNum=None, **params):

@@ -4,17 +4,16 @@ Example topology of Quagga routers
 
 import inspect
 import os
-from mininext.topo import Topo
-from mininext.services.quagga import QuaggaService
-
 from collections import namedtuple
+
+from mininext.services.quagga import QuaggaService
+from mininext.topo import Topo
 
 QuaggaHost = namedtuple("QuaggaHost", "name ip loIP")
 net = None
 
 
 class QuaggaTopo(Topo):
-
     "Creates a topology of Quagga routers"
 
     def __init__(self):
@@ -53,7 +52,6 @@ class QuaggaTopo(Topo):
 
         # Setup each Quagga router, add a link between it and the IXP fabric
         for host in quaggaHosts:
-
             # Create an instance of a host, called a quaggaContainer
             quaggaContainer = self.addHost(name=host.name,
                                            ip=host.ip,

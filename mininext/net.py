@@ -7,7 +7,6 @@ from mininet.net import Mininet
 
 
 class MiniNExT(Mininet):
-
     """Override on the default Mininet class to enable use of MiniNExT enabled
        hosts"""
 

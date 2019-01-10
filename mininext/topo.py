@@ -3,11 +3,11 @@ Extended "topo" module for MiniNExT.
 """
 
 from mininet.topo import Topo as BaseTopo
+
 from mininext.node import Host
 
 
 class Topo(BaseTopo):
-
     "Extended topology object to support MiniNExT customizations"
 
     def __init__(self, nopts=None, **opts):

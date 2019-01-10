@@ -11,7 +11,6 @@ from mininext.util import ParamContainer
 
 
 class Service(ParamContainer):
-
     "Basic service object that can be used by many nodes."
 
     def __init__(self, name, **kwargs):

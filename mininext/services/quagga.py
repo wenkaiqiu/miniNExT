@@ -2,13 +2,12 @@
 Example service that manages Quagga routers
 """
 
-from mininext.mount import MountProperties, ObjectPermissions, PathProperties
 from mininext.moduledeps import serviceCheck
+from mininext.mount import MountProperties, ObjectPermissions, PathProperties
 from mininext.service import Service
 
 
 class QuaggaService(Service):
-
     "Manages Quagga Software Router Service"
 
     def __init__(self, name="Quagga", **params):

@@ -4,7 +4,6 @@ Mount support for MiniNExT.
 
 
 class MountProperties(object):
-
     "Contains the properties needed by a mount handler"
 
     def __init__(self, target, source=None):
@@ -16,7 +15,6 @@ class MountProperties(object):
 
 
 class PathProperties(object):
-
     "Contains properties of a path along with options for actions to take"
 
     def __init__(
@@ -37,7 +35,6 @@ class PathProperties(object):
 
 
 class ObjectPermissions(object):
-
     "Containers the permission properties of an object / path"
 
     def __init__(self, username=None, uid=None, groupname=None, gid=None,

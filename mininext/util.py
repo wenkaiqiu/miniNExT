@@ -2,22 +2,26 @@
 Additional utilities and patches for MiniNExT.
 """
 
-from os.path import isdir
+import grp
 import os
 import pwd
-import grp
 import shutil
+from os.path import isdir
 
 from mininet.util import quietRun
+
 from mininext.mount import ObjectPermissions
+
 
 # Patches #
 
 
 def isShellBuiltin(cmd):
-    """Override to replace MiniNExT's existing isShellBuiltin() function,
-       which is partially broken. Function should return true if
-       cmd issued is a bash builtin."""
+    """
+    Override to replace MiniNExT's existing isShellBuiltin() function,
+    which is partially broken. Function should return true if
+    cmd issued is a bash builtin.
+    """
     # Original version would return true if container name was 'a'
     # or similar), as the letter 'a' exists within the output of
     # 'bash -c enable'. Prevented below at minimal cost"""
@@ -35,7 +39,9 @@ def isShellBuiltin(cmd):
         cmd = cmd[:space]
     return cmd in isShellBuiltin.builtIns
 
+
 isShellBuiltin.builtIns = None
+
 
 # Mount support / permissions management #
 
@@ -43,7 +49,7 @@ isShellBuiltin.builtIns = None
 
 
 def checkIsDir(path):
-    "Raises exception if path is not valid directory"
+    """Raises exception if path is not valid directory"""
     if quietCheckIsDir(path) is False:
         raise Exception("Path [%s] is not a valid directory" % (path))
 
@@ -142,7 +148,7 @@ def doDirPermsEqual(path, perms):
                         "or a subdirectory / file\n"
                         "Expected user = %s, group = %s, (minimum) mode = %s"
                         % (path, perms.username,
-                            perms.groupname, oct(perms.mode)))
+                           perms.groupname, oct(perms.mode)))
 
 
 def quietDoDirPermsEqual(path, perms):
@@ -204,6 +210,7 @@ def getObjectPerms(objectToInspect):
 
     return ObjectPermissions(uid=uid, gid=gid, mode=mode)
 
+
 # Create & modify directory/file state and permissions
 
 
@@ -245,7 +252,7 @@ def setObjectPerms(objectPath, perms):
         modeOK = False
         if perms.strictMode is None or True:
             modeOK = (
-                ((objectStat.st_mode & 0o777) ^ perms.mode) & perms.mode) == 0
+                             ((objectStat.st_mode & 0o777) ^ perms.mode) & perms.mode) == 0
         else:
             modeOK = (objectStat.st_mode & 0o777) == perms.mode
 
@@ -264,13 +271,13 @@ def copyTreeToExistingDir(src, dst, symlinks=False, ignore=None):
         else:
             shutil.copy2(s, d)
 
+
 # Simple Objects #
 
 # Parameter management for global and node specific parameters
 
 
 class ParamContainer(object):
-
     """Basic parameter management object that can be used by many nodes.
        Used to store configuration for services, where a global service
        config exists that can vary on a per node basis..."""
@@ -348,7 +355,7 @@ class ParamContainer(object):
 
     def getNodeParams(self, node, includeGlobals=True, **kwargs):
         "Returns structure containing a node's parameters for this service"
-        if includeGlobals is False and node not in self.nodeParams\
+        if includeGlobals is False and node not in self.nodeParams \
                 and 'defaultValue' not in kwargs:
             raise Exception('ParamContainer %s doesn\'t have params for '
                             'node %s' % (self.name, node))

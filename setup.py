@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-"Setuptools params for MiniNExT"
+"""
+Setuptools params for MiniNExT
+"""
 
 from setuptools import setup
 
@@ -12,7 +14,7 @@ setup(
     description='Extensions to Mininet (MiniNExT)',
     author='Brandon Schlinker',
     author_email='bschlink@usc.edu',
-    packages=[ 'mininext', 'mininext.services' ],
+    packages=['mininext', 'mininext.services'],
     long_description="""
         MiniNExT (MiniNet ExTended) is a layer of extensions
         on top of the existing Mininet software package. We are working
@@ -22,11 +24,11 @@ setup(
         to lower the barriers to Internet routing research.
         """,
     classifiers=[
-          "License :: OSI Approved :: BSD License",
-          "Programming Language :: Python",
-          "Development Status :: 5 - Production/Stable",
-          "Intended Audience :: Developers",
-          "Topic :: System :: Emulators",
+        "License :: OSI Approved :: BSD License",
+        "Programming Language :: Python",
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "Topic :: System :: Emulators",
     ],
     keywords='networking emulator protocol Internet OpenFlow SDN BGP Quagga containers',
     license='BSD',

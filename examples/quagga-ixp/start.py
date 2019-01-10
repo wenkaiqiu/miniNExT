@@ -5,12 +5,14 @@ Example network of Quagga routers
 (QuaggaTopo + QuaggaService)
 """
 
-import sys
 import atexit
+import sys
 
 # patch isShellBuiltin
 import mininet.util
+
 import mininext.util
+
 mininet.util.isShellBuiltin = mininext.util.isShellBuiltin
 sys.modules['mininet.util'] = mininet.util
 
@@ -57,6 +59,7 @@ def stopNetwork():
     if net is not None:
         info('** Tearing down Quagga network\n')
         net.stop()
+
 
 if __name__ == '__main__':
     # Force cleanup on exit by registering a cleanup function
