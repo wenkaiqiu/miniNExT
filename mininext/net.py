@@ -27,7 +27,7 @@ class MiniNExT(Mininet):
             if returnCodes:
                 # print detailed information on the started services
                 statusStr = "%s: " % (host)
-                for service, returnCode in returnCodes.iteritems():
+                for service, returnCode in returnCodes.items():
                     if returnCode['ret'] == 0:
                         result = 'OK'
                     else:
@@ -45,7 +45,7 @@ class MiniNExT(Mininet):
             if returnCodes:
                 # print detailed information on the stopped services
                 statusStr = "%s: " % (host)
-                for service, returnCode in returnCodes.iteritems():
+                for service, returnCode in returnCodes.items():
                     if returnCode['ret'] == 0:
                         result = 'OK'
                     else:

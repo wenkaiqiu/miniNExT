@@ -11,6 +11,7 @@ from subprocess import Popen, PIPE
 
 from mininet.log import error, debug
 from mininet.node import Node as BaseNode
+from mininet.util import BaseString
 
 from mininext.link import LoopbackIntf
 from mininext.mount import MountProperties, PathProperties
@@ -194,7 +195,7 @@ class Node(BaseNode):
             # To determine when we need to do this, we iterate through all
             # dict keys to discover non-string keys. We could also use a
             # flag or catch an exception, but these may have side-effects
-            if all(isinstance(k, basestring) for k in value):
+            if all(isinstance(k, BaseString) for k in value):
                 result = f(**value)
             else:
                 result = f(value)
@@ -341,7 +342,7 @@ class Node(BaseNode):
             if privateLogDir is False:
                 return
             privateLogDir = '/var/log/mininext/%s' % (self.name)
-        elif not isinstance(privateLogDir, basestring):
+        elif not isinstance(privateLogDir, BaseString):
             raise Exception("Invalid parameter for privateLogDir\n")
 
         # Create the PathProperties and MountProperties objects
@@ -367,7 +368,7 @@ class Node(BaseNode):
             if privateRunDir is False:
                 return
             privateRunDir = '/run/mininext/%s' % (self.name)
-        elif not isinstance(privateRunDir, basestring):
+        elif not isinstance(privateRunDir, BaseString):
             raise Exception("Invalid parameter for privateRunDir\n")
 
         # Create the PathProperties and MountProperties objects

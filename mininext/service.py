@@ -3,6 +3,9 @@ Service Helper for MiniNExT.
 """
 
 import copy
+
+from mininet.util import BaseString
+
 from mininext.mount import MountProperties
 from mininext.util import ParamContainer
 
@@ -148,7 +151,7 @@ class Service(ParamContainer):
         # allow overrides via defined configuration strings
         nodeMounts = []
         _, mountConfigPairs = self.getDefaultGlobalMounts()
-        for mountName, mountProperties in mountConfigPairs.iteritems():
+        for mountName, mountProperties in mountConfigPairs.items():
             # do a deep copy so we don't impact other nodes
             mountProperties = copy.deepcopy(mountProperties)
 
@@ -160,7 +163,7 @@ class Service(ParamContainer):
                 continue
 
             # Handle update depending on what is passed
-            if isinstance(nodeMountOptions, basestring):
+            if isinstance(nodeMountOptions, BaseString):
                 # Node passed a string, indicates override source
                 mountProperties.source.path = nodeMountOptions
             elif isinstance(nodeMountOptions, MountProperties):

@@ -3,6 +3,7 @@ VERSION = 1.4.0
 MININEXT = mininext
 EXAMPLEDIR = examples
 EXAMPLES = quagga-ixp
+PYTHON = python3
 PYSRC = $(MININEXT)/*.py $(MININEXT)/services/*.py
 PYSRC += $(addprefix $(MININEXT)/$(EXAMPLEDIR)/, $(EXAMPLES)/*.py)
 
@@ -13,7 +14,7 @@ MANPAGES = mxexec.1
 BINDIR = /usr/bin
 MANDIR = /usr/share/man/man1
 
-DEPS = help2man python-setuptools python-pip
+DEPS = help2man $(PYTHON)-setuptools $(PYTHON)-pip
 DEVELDEPS = $(DEPS) pyflakes pylint
 
 AUTOPEPOPTS = --in-place --aggressive --aggressive 
@@ -51,7 +52,7 @@ mxexec: mxexec.c
 install: $(INSTALLBINS) $(MANPAGES)
 	install $(INSTALLBINS) $(BINDIR)
 	install $(MANPAGES) $(MANDIR)
-	python setup.py install
+	$(PYTHON) setup.py install
 
 uninstall:
 	rm -f $(addprefix $(BINDIR)/, $(INSTALLBINS))
@@ -70,12 +71,12 @@ develdeps:
 develop: $(INSTALLBINS) $(MANPAGES)
 	install $(INSTALLBINS) $(BINDIR)
 	install $(MANPAGES) $(MANDIR)
-	python setup.py develop
+	$(PYTHON) setup.py develop
 
 undevelop:
 	rm -f $(addprefix $(BINDIR)/, $(INSTALLBINS))	
 	rm -f $(addprefix $(MANDIR)/, $(MANPAGES))
-	python setup.py develop --uninstall
+	$(PYTHON) setup.py develop --uninstall
 .PHONY: undevelop
 
 man: $(MANPAGES)
