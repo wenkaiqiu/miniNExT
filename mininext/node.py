@@ -1,24 +1,24 @@
 """
 Extended node object for MiniNExT.
 """
-
-import signal
+import os
+import pty
 import select
 import shutil
+import signal
 import tempfile
-from subprocess import Popen, PIPE, STDOUT
+from subprocess import Popen, PIPE
 
-from mininet.node import Node as BaseNode
 from mininet.log import error, debug
+from mininet.node import Node as BaseNode
 
 from mininext.link import LoopbackIntf
+from mininext.mount import MountProperties, PathProperties
 from mininext.util import (checkPath, getObjectPerms, createDirIfNeeded,
                            setDirPerms, doDirPermsEqual)
-from mininext.mount import MountProperties, PathProperties
 
 
 class Node(BaseNode):
-
     """A Mininet node with various extensions and enhancements."""
 
     def __init__(self, name, inMountNamespace=False, inPIDNamespace=False,
@@ -75,11 +75,20 @@ class Node(BaseNode):
             opts += 'u'
         # bash -m: enable job control
         # -s: pass $* to shell, and make process easy to find in ps
-        cmd = ['mxexec', opts, 'bash', '-ms', 'mininet:' + self.name]
-        self.shell = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=STDOUT,
-                           close_fds=True)
-        self.stdin = self.shell.stdin
-        self.stdout = self.shell.stdout
+        cmd = ['mxexec', opts, 'env', 'PS1=' + chr(127),
+               'bash', '--norc', '--noediting',
+               '-is', 'mininet:' + self.name]
+
+        # Spawn a shell subprocess in a pseudo-tty, to disable buffering
+        # in the subprocess and insulate it from signals (e.g. SIGINT)
+        # received by the parent
+        self.master, self.slave = pty.openpty()
+        self.shell = self._popen(cmd, stdin=self.slave, stdout=self.slave,
+                                 stderr=self.slave, close_fds=False)
+        # XXX BL: This doesn't seem right, and we should also probably
+        # close our files when we exit...
+        self.stdin = os.fdopen(self.master, 'r')
+        self.stdout = self.stdin
         self.pid = self.shell.pid
         self.pollOut = select.poll()
         self.pollOut.register(self.stdout)
@@ -103,6 +112,8 @@ class Node(BaseNode):
                 raise Exception('Unable to determine shell\'s PID')
             self.pid = self.lastPid
             self.lastPid = None
+        # +m: disable job control notification
+        self.cmd('unset HISTFILE; stty -echo; set +m')
 
     # Override on popen() to support mount and PID namespaces
     def popen(self, *args, **kwargs):
@@ -439,6 +450,5 @@ class Node(BaseNode):
 
 
 class Host(Node):
-
     "MiniNExT enabled host"
     pass
