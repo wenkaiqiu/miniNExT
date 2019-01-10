@@ -179,7 +179,7 @@ class Node(BaseNode):
            method: config method name
            param: arg=value (ignore if value=None)
            value may also be list or dict"""
-        name, value = param.items()[0]
+        name, value = list(param.items())[0]
         f = getattr(self, method, None)
         if not f or value is None:
             return
@@ -246,7 +246,7 @@ class Node(BaseNode):
         # Update /etc/hostname...
         # Create a new temporary file, then write the hostname to the file
         # then mount over /etc/hostname with the new file
-        hnTmp = tempfile.NamedTemporaryFile(prefix=("mx-hostname-%s" % (self)),
+        hnTmp = tempfile.NamedTemporaryFile(mode='w+', prefix=("mx-hostname-%s" % (self)),
                                             delete=False)
         hnTmp.write(hostname)
         self.bindObject(hnTmp.name, "/etc/hostname")
@@ -254,7 +254,7 @@ class Node(BaseNode):
         # Update /etc/hosts...
         # Create a new temporary file, then write the hostname to the file
         # then mount over /etc/hosts with the new file
-        hostsTmp = tempfile.NamedTemporaryFile(prefix=("mx-hosts-%s" % (self)),
+        hostsTmp = tempfile.NamedTemporaryFile(mode='w+', prefix=("mx-hosts-%s" % (self)),
                                                delete=False)
 
         # copy the existing hosts file
