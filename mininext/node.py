@@ -172,6 +172,14 @@ class Node(BaseNode):
         else:
             BaseNode.sendInt(self)
 
+    def terminate( self ):
+        "Send kill signal to Node and clean up after it."
+        self.unmountPrivateDirs()
+        if self.shell:
+            if self.shell.poll() is None:
+                os.killpg( self.pid, signal.SIGHUP )
+        self.cleanup()
+
     # Override on setParam() to handle passing dicts with non-string keywords
     def setParam(self, results, method, **param):
         """Internal method: configure a *single* parameter
