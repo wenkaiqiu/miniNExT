@@ -4,6 +4,7 @@ MININEXT = mininext
 EXAMPLEDIR = examples
 EXAMPLES = quagga-ixp
 PYTHON = python3
+PIP = pip3
 PYSRC = $(MININEXT)/*.py $(MININEXT)/services/*.py
 PYSRC += $(addprefix $(MININEXT)/$(EXAMPLEDIR)/, $(EXAMPLES)/*.py)
 
@@ -57,7 +58,7 @@ install: $(INSTALLBINS) $(MANPAGES)
 uninstall:
 	rm -f $(addprefix $(BINDIR)/, $(INSTALLBINS))
 	rm -f $(addprefix $(MANDIR)/, $(MANPAGES))
-	pip uninstall mininext
+	$(PIP) uninstall mininext
 .PHONY: uninstall
 
 deps:
