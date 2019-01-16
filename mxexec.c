@@ -151,6 +151,12 @@ int main(int argc, char *argv[]) {
                 perror("unshare");
                 return 1;
             }
+
+            if (mount("none", "/", NULL, MS_REC|MS_PRIVATE, NULL) == -1) {
+                printf("----------------------------------------");
+                perror("mount");
+                return 1;
+            }
             /* mount sysfs to pick up the new network namespace */
             mountns = MOUNT_NS_CREATE; /* delay mount of /sysfs */
             break;
