@@ -102,7 +102,6 @@ class Node(BaseNode):
         self.lastCmd = None
         self.lastPid = None
         self.readbuf = ''
-        self.waiting = False
 
         # If this node has a private PID space, grab the PID to attach to
         # Otherwise, we use the same PID as the shell's PID
@@ -113,6 +112,14 @@ class Node(BaseNode):
                 raise Exception('Unable to determine shell\'s PID')
             self.pid = self.lastPid
             self.lastPid = None
+
+        # Wait for prompt
+        while True:
+            data = self.read(1024)
+            if data[-1] == chr(127):
+                break
+            self.pollOut.poll()
+        self.waiting = False
         # +m: disable job control notification
         self.cmd('unset HISTFILE; stty -echo; set +m')
 
